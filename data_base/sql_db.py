@@ -1,26 +1,27 @@
 import sqlite3 as sq
-from sqlite3 import Connection
-
 from loader import bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 def sql_start():
+    """ Подключение к базе данных """
     global base, cur
-    base: Connection = sq.connect('data/database.db')
+    base = sq.connect('data/database.db')
     cur = base.cursor()
     if base:
         print('Data base connected - OK')
 
 
 async def get_all_details(message):
-    keyboard = InlineKeyboardMarkup(row_width=4, resize_keyboard=True)
+    """ Создает инлайн кнопки для всех деталей """
+    keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
     for ret in cur.execute('''SELECT DISTINCT Деталь FROM details_operation''').fetchall():
         keyboard.insert(InlineKeyboardButton(f'{ret[0]}', callback_data=f'time_op {ret[0]}'))
     await bot.send_message(message.from_user.id, text='Детали - нажми что бы узнать время', reply_markup=keyboard)
 
 
 async def get_time_operation(callback_query, detail):
+    """ Получает время на операцию и передает данные пользователю """
     text_massage = ''
     await bot.send_message(callback_query.from_user.id, detail)
 
