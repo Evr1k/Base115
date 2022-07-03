@@ -1,3 +1,5 @@
+import os
+
 from aiogram import types, Dispatcher
 from data_base import sql_admin
 from data_base.sql_admin import export_pandas
@@ -16,7 +18,8 @@ async def to_accept_xls(message):
         file_info = await bot.get_file(message.document.file_id)
         downloaded_file = await bot.download_file(file_info.file_path)
 
-        src = "E:/Base115/data/files/" + message.document.file_name
+        dir = os.path.abspath(os.curdir)
+        src = dir + "/data/files/" + message.document.file_name
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file.getvalue())
 
