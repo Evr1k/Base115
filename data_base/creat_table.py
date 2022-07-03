@@ -1,8 +1,6 @@
+import datetime
+import pandas
 import sqlite3 as sq
-import openpyxl
-from data.config import admin_id
-# from loader import cur
-import datetime, pandas
 
 base = sq.connect('db.db')
 cur = base.cursor()

@@ -18,6 +18,7 @@ def on_startup():
     print('Bot - online')
     sql_db.sql_start()
 
+
 async def get_all_details(message):
     """ Создает инлайн кнопки для всех деталей """
     keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
