@@ -18,7 +18,7 @@ async def to_accept_xls(message):
         file_info = await bot.get_file(message.document.file_id)
         downloaded_file = await bot.download_file(file_info.file_path)
 
-        dir = os.path.abspath(os.curdir)
+        #dir = os.path.abspath(os.curdir)
         await bot.send_message(message.from_user.id, dir)
         src = dir + "/data/files/" + message.document.file_name
         with open(src, 'wb') as new_file:
