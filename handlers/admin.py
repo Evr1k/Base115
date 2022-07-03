@@ -23,4 +23,4 @@ def to_accept_xls(message):
         bot.reply_to(message, e)
 
 def register_handlers_client(dp: Dispatcher):
-    dp.register_callback_query_handler(to_accept_xls, lambda x: x.data and x.data.startswith('обнови операции'))
+    dp.register_message_handler(to_accept_xls, content_types=['document'])
