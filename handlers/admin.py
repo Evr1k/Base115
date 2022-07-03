@@ -2,6 +2,9 @@ from aiogram import types, Dispatcher
 from data_base import sql_admin
 
 
+async def command(message: types.Message):
+    await bot.send_message(message.from_user.id, 'обновлен')
+
 
 @bot.message_handler(content_types=['document'])
 def to_accept_xls(message):
@@ -24,3 +27,4 @@ def to_accept_xls(message):
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(to_accept_xls, content_types=['document'])
+    dp.register_message_handler(command, commands=[/обнови'])
