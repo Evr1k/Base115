@@ -1,2 +1,4 @@
 /data/config.py
+/data/db.db
 .idea
+creat_table.py

@@ -1,10 +1,22 @@
 import sqlite3 as sq
+
+from data.config import admin_id
 from loader import bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from loader import cur
 
 
+def sql_start():
+    """ Подключение к базе данных """
+    global base, cur
+    base = sq.connect('data/database.db')
+    cur = base.cursor()
+    if base:
+        print('Data base connected - OK')
 
+
+def on_startup():
+    print('Bot - online')
+    sql_db.sql_start()
 
 async def get_all_details(message):
     """ Создает инлайн кнопки для всех деталей """
