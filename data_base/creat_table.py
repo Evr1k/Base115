@@ -1,31 +1,48 @@
 import sqlite3 as sq
-import pandas
+import openpyxl
+from data.config import admin_id
+# from loader import cur
+import datetime, pandas
+
+base = sq.connect('db.db')
+cur = base.cursor()
 
 
-def insert_detail_operation(records):
-    con = sq.connect("data/database.db")
-    cur = con.cursor()
-    print(f"Записи удалены из таблицы {cur.execute('DELETE FROM details_operation').rowcount}")
-    sqlite_insert_query = """INSERT INTO details_operation
-                             (id, detal_name, operation_number,
-                             operation_name, machine, working_time)
-                             VALUES (?, ?, ?, ?, ?, ?);"""
-    cur.executemany(sqlite_insert_query, records)
-    con.commit()
+# def export_operation_to_db(xls_file):
+#     file_to_read = openpyxl.load_workbook(xls_file, read_only=True, data_only=True)
+#     sheet = file_to_read.active
+#     data = []
+#     for row in range(2, sheet.max_row + 1):
+#         record = []
+#         for col in range(1, 6):
+#             value = sheet.cell(row, col).value
+#             record.append(value)
+#         record.append(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
+#         data.append(record)
+#         print(f'app end {row}')
+#
+#     insert_to_base = """INSERT INTO operation VALUES (NULL, ?, ?, ?, ?, ?, ?);"""
+#     print('2 - ok')
+#
+#     cur.executemany(insert_to_base, data)
+#     print('3 - ok')
+#     base.commit()
 
-    print("Записи успешно вставлены в таблицу", cur.rowcount)
-    con.commit()
-    cur.close()
 
+def export_pandas(xls_file):
+    print(f"Записи удалены из таблицы {cur.execute('DELETE FROM operation').rowcount}")
+    time = datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
+    sqlite_insert_query = """INSERT INTO operation
+                                 (op_id, detail, op_number,
+                                 op_name, machine, op_time, update_date)
+                                 VALUES (NULL, ?, ?, ?, ?, ?, time);"""
+    machine_time_data = pandas.read_excel(xls_file, sheet_name='Time',
+                                          usecols=['Деталь', 'номер операции', 'название операции', 'станок',
+                                                   'время от БТЗ', 'учет'])
+    df_filter = machine_time_data.dropna(subset=['учет'])
+    df_filter.to_sql('operation', base, schema=None, if_exists='replace', index=True)
+    base.commit()
 
-machine_time_data = pandas.read_excel('E:\Base115\MachineTime.xlsx', sheet_name='Time',
-                                      usecols=['Деталь', 'номер операции', 'название операции', 'станок',
-                                               'время от БТЗ', 'учет'])
+file = './MachineTime.xlsx'
 
-df_filter = machine_time_data.dropna(subset=['учет'])
-
-con = sq.connect("data/database.db")
-cur = con.cursor()
-df_filter.to_sql('details_operation', con, schema=None, if_exists='replace', index=True)
-con.commit()
-cur.close()
+export_pandas(file)
