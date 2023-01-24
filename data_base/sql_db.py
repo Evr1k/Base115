@@ -38,5 +38,8 @@ async def get_time_operation(callback_query, detail):
                             FROM details_operation 
                             WHERE Деталь = ? AND ("время по станку" IS NOT NULL OR "время по ТП" IS NOT NULL)''', (detail,)).fetchall()
     for i in ret:
-        text_massage += f'Оп {i[0]} - {i[1]} - {i[2]} мин. \n'
+        if i[3] != 0:
+            text_massage += f'Оп {i[0]} - {i[1]} - {i[3]} мин. - {i[4]} руб. \n'
+        else:
+            text_massage += f'Оп {i[0]} - {i[1]} - {i[2]} мин. - ТП тютю \n'
     await bot.send_message(callback_query.from_user.id, text=text_massage)
