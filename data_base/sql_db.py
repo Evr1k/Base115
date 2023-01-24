@@ -8,7 +8,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 def sql_start():
     """ Подключение к базе данных """
     global base, cur
-    base = sq.connect('data/database.db')
+    base = sq.connect('database.db')
     cur = base.cursor()
     if base:
         print('Data base connected - OK')
@@ -34,9 +34,9 @@ async def get_time_operation(callback_query, detail):
     text_massage = ''
     await bot.send_message(callback_query.from_user.id, detail)
 
-    ret = cur.execute('''SELECT "номер операции", "название операции", "время от БТЗ" 
+    ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
                             FROM details_operation 
-                            WHERE Деталь = ? AND "время от БТЗ" IS NOT NULL''', (detail,)).fetchall()
+                            WHERE Деталь = ? AND ("время по станку" IS NOT NULL OR "время по ТП" IS NOT NULL)''', (detail,)).fetchall()
     for i in ret:
         text_massage += f'Оп {i[0]} - {i[1]} - {i[2]} мин. \n'
     await bot.send_message(callback_query.from_user.id, text=text_massage)
