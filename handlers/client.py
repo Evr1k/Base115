@@ -22,4 +22,4 @@ async def get_time_detail(callback_query: types.CallbackQuery):
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(get_details, commands=['Детали'])
-    dp.register_callback_query_handler(get_time_detail, lambda x: x.excell_data and x.excell_data.startswith('time_op '))
+    dp.register_callback_query_handler(get_time_detail, lambda x: x.data and x.data.startswith('time_op '))
