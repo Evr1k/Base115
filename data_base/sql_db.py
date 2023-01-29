@@ -21,7 +21,7 @@ def on_startup():
 async def get_all_details(message):
     """ Создает инлайн кнопки для всех деталей """
     keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
-    for ret in cur.execute('''SELECT DISTINCT Деталь FROM details_operation''').fetchall():
+    for ret in cur.execute('''SELECT DISTINCT Деталь FROM operation''').fetchall():
         keyboard.insert(InlineKeyboardButton(f'{ret[0]}', callback_data=f'time_op {ret[0]}'))
     await bot.send_message(message.from_user.id, text='Детали - нажми что бы узнать время', reply_markup=keyboard)
     await bot.send_message(admin_id, f'Create qwerry from \
@@ -34,7 +34,7 @@ async def get_time_operation(callback_query, detail):
     await bot.send_message(callback_query.from_user.id, detail)
 
     ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
-                            FROM details_operation 
+                            FROM operation 
                             WHERE Деталь = ? AND ("время по станку" IS NOT NULL OR "время по ТП" IS NOT NULL)''', (detail,)).fetchall()
     for i in ret:
         if i[3] != 0:
