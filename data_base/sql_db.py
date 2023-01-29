@@ -1,3 +1,4 @@
+import os
 import sqlite3 as sq
 
 from loader import bot
