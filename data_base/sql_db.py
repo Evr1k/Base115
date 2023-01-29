@@ -8,8 +8,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 def sql_start():
     """ Подключение к базе данных """
     global base, cur
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    db_path = os.path.join(BASE_DIR, 'database.db')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, 'database.db')
     base = sq.connect(db_path)
     cur = base.cursor()
     if base:
@@ -18,7 +18,7 @@ def sql_start():
 
 def on_startup():
     print('Bot - online')
-    sql_db.sql_start()
+    sql_start()
 
 
 async def get_all_details(message):
@@ -36,10 +36,13 @@ async def get_time_operation(callback_query, detail):
 
     ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
                             FROM operation 
-                            WHERE Деталь = ? AND ("время по станку" IS NOT NULL OR "время по ТП" IS NOT NULL)''', (detail,)).fetchall()
-    for i in ret:
-        if i[3] != 0:
-            text_massage += f'Оп {i[0]} - {i[1]} - {i[3]} мин. - {i[4]} руб. \n'
-        else:
-            text_massage += f'Оп {i[0]} - {i[1]} - {i[2]} мин. - ТП тютю \n'
+                            WHERE Деталь = ?''', (detail,)).fetchall()
+    for num_operation, name_operation, time_machine, time_tp, price in enumerate(ret):
+        if time_machine is None and time_tp is None:
+            text_massage += f'Оп {num_operation} - {name_operation} - не нормирована \n'
+        if time_tp is not None:
+            text_massage += f'Оп {num_operation} - {name_operation} - {time_tp} мин.- {price} руб. \n'
+        if time_tp is None:
+            text_massage += f'Оп {num_operation} - {name_operation} - {time_machine} мин. - время со станка \n'
+
     await bot.send_message(callback_query.from_user.id, text=text_massage)
