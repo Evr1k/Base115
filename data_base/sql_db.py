@@ -37,7 +37,7 @@ async def get_time_operation(callback_query, detail):
     ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
                             FROM operation 
                             WHERE Деталь = ?''', (detail,)).fetchall()
-    for num_operation, name_operation, time_machine, time_tp, price in enumerate(ret):
+    for num_operation, name_operation, time_machine, time_tp, price in ret:
         if time_machine is None and time_tp is None:
             text_massage += f'Оп {num_operation} - {name_operation} - не нормирована \n'
         if time_tp is not None:
