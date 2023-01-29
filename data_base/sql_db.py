@@ -38,11 +38,10 @@ async def get_time_operation(callback_query, detail):
                             FROM operation 
                             WHERE Деталь = ?''', (detail,)).fetchall()
     for num_operation, name_operation, time_machine, time_tp, price in ret:
-        if time_machine is None and time_tp is None:
-            text_massage += f'Оп {num_operation} - {name_operation} - не нормирована \n'
         if time_tp is not None:
             text_massage += f'Оп {num_operation} - {name_operation} - {time_tp} мин.- {price} руб. \n'
-        if time_tp is None:
+        elif time_tp is None and time_machine is not None:
             text_massage += f'Оп {num_operation} - {name_operation} - {time_machine} мин. - время со станка \n'
-
+        else:
+            text_massage += f'Оп {num_operation} - {name_operation} - не нормирована \n'
     await bot.send_message(callback_query.from_user.id, text=text_massage)
