@@ -26,7 +26,6 @@ async def get_all_details(message):
     await bot.send_message(message.from_user.id, text='Детали - нажми что бы узнать время', reply_markup=keyboard)
 
 
-
 async def get_time_operation(callback_query, detail):
     """ Получает время на операцию и передает данные пользователю """
     text_massage = ''
