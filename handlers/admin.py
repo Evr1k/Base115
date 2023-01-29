@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from data_base.sql_admin import export_pandas
+from data_base.sql_admin import export_pandas_from_admin_telegram
 from loader import bot
 
 
@@ -14,7 +14,7 @@ async def to_accept_xls(message):
         src = message.document.file_name
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file.getvalue())
-        export_pandas(src)
+        export_pandas_from_admin_telegram(src)
         await bot.send_message(message.from_user.id, "Обновил")
 
     except Exception as e:
