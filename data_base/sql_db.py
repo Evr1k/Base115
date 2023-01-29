@@ -7,7 +7,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 def sql_start():
     """ Подключение к базе данных """
     global base, cur
-    base = sq.connect('database.db')
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(BASE_DIR, 'database.db')
+    base = sq.connect(db_path)
     cur = base.cursor()
     if base:
         print('Data base connected - OK')
