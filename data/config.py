@@ -1,4 +1,4 @@
 import os
 
 
-token = os.getenv("TOKEN")
+TOKEN = os.getenv("TOKEN")
