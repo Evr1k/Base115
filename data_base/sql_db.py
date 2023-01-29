@@ -1,6 +1,5 @@
 import sqlite3 as sq
 
-from data.config import admin_id
 from loader import bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
