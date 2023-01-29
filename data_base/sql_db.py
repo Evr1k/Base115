@@ -24,8 +24,7 @@ async def get_all_details(message):
     for ret in cur.execute('''SELECT DISTINCT Деталь FROM operation''').fetchall():
         keyboard.insert(InlineKeyboardButton(f'{ret[0]}', callback_data=f'time_op {ret[0]}'))
     await bot.send_message(message.from_user.id, text='Детали - нажми что бы узнать время', reply_markup=keyboard)
-    await bot.send_message(admin_id, f'Create qwerry from \
-                            {message.from_user.first_name} {message.from_user.last_name}!!!')
+
 
 
 async def get_time_operation(callback_query, detail):
