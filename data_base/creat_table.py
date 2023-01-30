@@ -20,12 +20,12 @@ def select_answer():
                                                                 FROM operation 
                                                                 ORDER BY Деталь''').fetchall())
     for ret in set(answer_bd):
-        det = cur.execute('''SELECT Деталь 
+        det = cur.execute('''SELECT DISTINCT Деталь 
                             FROM operation 
                             WHERE Деталь LIKE ?
                             ORDER BY Деталь''', (ret[2:] + "%",)).fetchall()
         print(ret[2:])
-        print(det)
+        print(det[0])
         break
 
 
