@@ -28,7 +28,8 @@ async def get_head_details(message):
                                                                 FROM operation 
                                                                 ORDER BY Деталь''').fetchall())
     for ret in set(answer_bd):
-        keyboard.insert(InlineKeyboardButton(f'{ret[2:]}', callback_data=f'head_detail {ret[0]}'))
+        keyboard.insert(InlineKeyboardButton(f'{ret[2:]}', callback_data=f'head_detail {ret[2:]}'))
+    print('head - ok')
     await bot.send_message(message.from_user.id, text='Выберите голову чертежа детали', reply_markup=keyboard)
 
 
@@ -41,6 +42,7 @@ async def get_all_detail_head(callback_query, head_detail):
                             ORDER BY Деталь''', (head_detail + "%",)).fetchall()
     for i in ret:
         keyboard.insert(InlineKeyboardButton(f'{ret[0]}..', callback_data=f'detail {ret[0]}'))
+    print('detail - ok')
     await bot.send_message(callback_query.from_user.id, text='Выберите деталь', reply_markup=keyboard)
 
 
@@ -53,6 +55,9 @@ async def get_time_operation(callback_query, detail):
                             FROM operation 
                             WHERE Деталь = ?
                             ORDER BY Деталь''', (detail,)).fetchall()
+    print('time - ok')
+
+
     for num_operation, name_operation, time_machine, time_tp, price in ret:
         if time_tp is not None:
             text_massage += f'Оп {num_operation} - {name_operation} - {time_tp} мин.- {price} руб. \n'
