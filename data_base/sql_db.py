@@ -23,7 +23,7 @@ def on_startup():
 
 async def get_head_details(message):
     """ Создает инлайн кнопки для всех деталей группируя по голове чертежа"""
-    keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
+    keyboard = InlineKeyboardMarkup(row_width=5, resize_keyboard=True)
     answer_bd = (str(i).split(".", 1)[0] for i in cur.execute('''SELECT DISTINCT Деталь 
                                                                 FROM operation 
                                                                 ORDER BY Деталь''').fetchall())
@@ -36,7 +36,7 @@ async def get_head_details(message):
 async def get_all_detail_head(callback_query, head_detail):
     """ Создает инлайн кнопки для всех деталей выбранной головы чертежа"""
     keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
-    ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
+    ret = cur.execute('''SELECT Деталь 
                             FROM operation 
                             WHERE Деталь LIKE ?
                             ORDER BY Деталь''', (head_detail + "%",)).fetchall()
