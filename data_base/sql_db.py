@@ -21,12 +21,23 @@ def on_startup():
     sql_start()
 
 
-async def get_all_details(message):
-    """ Создает инлайн кнопки для всех деталей """
+async def get_head_details(message):
+    """ Создает инлайн кнопки для всех деталей группируя по голове чертежа"""
     keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
-    for ret in cur.execute('''SELECT DISTINCT Деталь FROM operation''').fetchall():
-        keyboard.insert(InlineKeyboardButton(f'{ret[0]}', callback_data=f'time_op {ret[0]}'))
-    await bot.send_message(message.from_user.id, text='Детали - нажми что бы узнать время', reply_markup=keyboard)
+    answer_bd = (i[:4] for i in cur.execute('''SELECT DISTINCT Деталь FROM operation''').fetchall())
+    for ret in set(answer_bd):
+        keyboard.insert(InlineKeyboardButton(f'{ret}..', callback_data=f'head_detail {ret}'))
+    await bot.send_message(message.from_user.id, text='Выберите голову чертежа детали', reply_markup=keyboard)
+
+
+async def get_all_detail_head(callback_query, head_detail):
+    """ Создает инлайн кнопки для всех деталей выбранной головы чертежа"""
+    ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
+                            FROM operation 
+                            WHERE Деталь LIKE ?''', (head_detail,)).fetchall()
+    for i in ret:
+        keyboard.insert(InlineKeyboardButton(f'{ret[0]}..', callback_data=f'detail {ret[0]}'))
+    await bot.send_message(message.from_user.id, text='Выберите деталь', reply_markup=keyboard)
 
 
 async def get_time_operation(callback_query, detail):

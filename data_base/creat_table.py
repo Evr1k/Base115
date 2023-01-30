@@ -14,6 +14,6 @@ def export_pandas(xls_file):
     base.commit()
 
 
-file = 'E:\Base115\data\\files\MachineTime.xlsx'
-
-export_pandas(file)
+if __name__ == '__main__':
+    file_excel = 'E:\Base115\data\\files\MachineTime.xlsx'
+    export_pandas(file_excel)

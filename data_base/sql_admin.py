@@ -8,3 +8,7 @@ def export_pandas_from_admin_telegram(xls_file):
                                       'время по станку', 'время по ТП', 'расценка', 'учет'])
     df_filter = data.dropna(subset=['учет'])
     df_filter.to_sql('operation', con=sql_db.base, schema=None, if_exists='replace', index=True)
+
+if __name__ == '__main__':
+    file_excel = 'E:\Base115\data\\files\MachineTime.xlsx'
+    export_pandas(file_excel)
