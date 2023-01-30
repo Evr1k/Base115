@@ -24,7 +24,7 @@ def on_startup():
 async def get_head_details(message):
     """ Создает инлайн кнопки для всех деталей группируя по голове чертежа"""
     keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
-    answer_bd = (str(i)[1:7] for i in cur.execute('''SELECT DISTINCT Деталь FROM operation''').fetchall())
+    answer_bd = (str(i)[2:6] for i in cur.execute('''SELECT DISTINCT Деталь FROM operation''').fetchall())
     for ret in set(answer_bd):
         keyboard.insert(InlineKeyboardButton(f'{ret}..', callback_data=f'head_detail {ret}'))
     await bot.send_message(message.from_user.id, text='Выберите голову чертежа детали', reply_markup=keyboard)
