@@ -28,7 +28,7 @@ async def get_head_details(message):
                                                                 FROM operation 
                                                                 ORDER BY Деталь''').fetchall())
     for ret in set(answer_bd):
-        keyboard.insert(InlineKeyboardButton(f'{ret[0]}', callback_data=f'head_detail {ret[0]}'))
+        keyboard.insert(InlineKeyboardButton(f'{ret[2:]}', callback_data=f'head_detail {ret[0]}'))
     await bot.send_message(message.from_user.id, text='Выберите голову чертежа детали', reply_markup=keyboard)
 
 
