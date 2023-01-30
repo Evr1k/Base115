@@ -20,7 +20,7 @@ def select_answer():
                                                                 FROM operation 
                                                                 ORDER BY Деталь''').fetchall())
     for ret in set(answer_bd):
-        det = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
+        det = cur.execute('''SELECT Деталь 
                             FROM operation 
                             WHERE Деталь LIKE ?
                             ORDER BY Деталь''', (ret[2:] + "%",)).fetchall()
