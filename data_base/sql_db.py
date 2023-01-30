@@ -32,12 +32,13 @@ async def get_head_details(message):
 
 async def get_all_detail_head(callback_query, head_detail):
     """ Создает инлайн кнопки для всех деталей выбранной головы чертежа"""
+    keyboard = InlineKeyboardMarkup(row_width=3, resize_keyboard=True)
     ret = cur.execute('''SELECT "номер операции", "название операции", "время по станку", "время по ТП", "расценка" 
                             FROM operation 
                             WHERE Деталь LIKE ?''', (head_detail,)).fetchall()
     for i in ret:
         keyboard.insert(InlineKeyboardButton(f'{ret[0]}..', callback_data=f'detail {ret[0]}'))
-    await bot.send_message(message.from_user.id, text='Выберите деталь', reply_markup=keyboard)
+    await bot.send_message(callback_query.from_user.id, text='Выберите деталь', reply_markup=keyboard)
 
 
 async def get_time_operation(callback_query, detail):
