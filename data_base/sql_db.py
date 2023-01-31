@@ -23,7 +23,7 @@ def on_startup():
 
 async def get_head_details(message):
     """ Создает инлайн кнопки для всех деталей группируя по голове чертежа"""
-    keyboard = InlineKeyboardMarkup(row_width=5, resize_keyboard=True)
+    keyboard = InlineKeyboardMarkup(row_width=4, resize_keyboard=True)
     answer_bd = (str(i).split(".", 1)[0] for i in cur.execute('''SELECT DISTINCT Деталь 
                                                                 FROM operation 
                                                                 ORDER BY Деталь''').fetchall())
