@@ -15,6 +15,7 @@ def export_pandas(xls_file):
     df_filter.to_sql('operation', base, schema=None, if_exists='replace', index=True)
     base.commit()
 
+
 def select_answer():
     answer_bd = (str(i).split(".", 1)[0] for i in cur.execute('''SELECT DISTINCT Деталь 
                                                                 FROM operation 
@@ -24,8 +25,6 @@ def select_answer():
                             FROM operation 
                             WHERE Деталь LIKE ?
                             ORDER BY Деталь''', (ret[2:] + "%",)).fetchall()
-        print(ret[2:])
-        print(det[0])
         break
 
 
